@@ -1,0 +1,598 @@
+/* ========================================
+   ROOT VARIABLES (Warna Global)
+   ======================================== */
+:root {
+  --primary: #d32f2f;
+  --primary-dark: #b71c1c;
+  --primary-light: #ffcdd2;
+  --secondary: #ffc107;
+  --dark: #1e293b;
+  --dark-secondary: #334155;
+  --gray-bg: #f1f5f9;
+  --card-bg: #ffffff;
+  --border: #e2e8f0;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+  --shadow:
+    0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
+  --shadow-hover: 0 20px 40px -12px rgba(0, 0, 0, 0.15);
+  --radius: 16px;
+  --radius-sm: 10px;
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --font-family:
+    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  /* Aksesibilitas - Default */
+  --font-size-base: 16px;
+  --contrast-mode: 0;
+  --highlight-links: 0;
+  --grayscale-mode: 0;
+  --brightness-mode: 1;
+}
+
+/* ========================================
+   RESET & BASE
+   ======================================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family);
+  color: var(--text-primary);
+  background: var(--gray-bg);
+  line-height: 1.6;
+  font-size: var(--font-size-base);
+  transition: all 0.3s ease;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+img {
+  max-width: 100%;
+  display: block;
+}
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+ul {
+  list-style: none;
+}
+
+/* ========================================
+   TOPBAR
+   ======================================== */
+.topbar {
+  background: var(--primary-dark);
+  color: #fff;
+  font-size: 13px;
+  padding: 8px 24px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  letter-spacing: 0.02em;
+}
+.topbar .clock {
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 4px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+}
+
+/* ========================================
+   NAVBAR
+   ======================================== */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+.brand-badge {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, var(--secondary), var(--primary));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 800;
+  font-size: 18px;
+  box-shadow: 0 4px 8px rgba(211, 47, 47, 0.3);
+}
+.brand-text {
+  font-weight: 800;
+  font-size: 18px;
+  color: var(--dark);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+.brand-sub {
+  font-size: 10px;
+  color: var(--text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.menu {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+.menu-item {
+  position: relative;
+}
+.menu-link {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  border-radius: var(--radius-sm);
+  transition: var(--transition);
+}
+.menu-link:hover,
+.menu-item.open .menu-link {
+  background: var(--primary-light);
+  color: var(--primary);
+}
+.menu-link .caret {
+  font-size: 8px;
+  transition: var(--transition);
+  margin-left: 2px;
+}
+.menu-item.open .caret {
+  transform: rotate(180deg);
+}
+
+.dropdown {
+  position: absolute;
+  top: 110%;
+  left: 0;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-hover);
+  min-width: 260px;
+  padding: 8px;
+  display: none;
+  flex-direction: column;
+  gap: 2px;
+  z-index: 200;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+.menu-item.open .dropdown {
+  display: flex;
+}
+.dropdown a {
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  color: var(--text-primary);
+  font-weight: 500;
+  transition: var(--transition);
+}
+.dropdown a:hover {
+  background: var(--gray-bg);
+  color: var(--primary);
+}
+.dropdown a.active {
+  background: var(--primary-light);
+  color: var(--primary);
+  font-weight: 700;
+}
+
+/* ========================================
+   FLOATING BUTTONS
+   ======================================== */
+.fab-accessibility {
+  position: fixed;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 150;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--dark);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  transition: var(--transition);
+}
+.fab-accessibility:hover {
+  transform: translateY(-50%) scale(1.08);
+  background: var(--primary);
+}
+
+.fab-chat {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 150;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #7c3aed;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 28px rgba(124, 58, 237, 0.4);
+  transition: var(--transition);
+}
+.fab-chat:hover {
+  transform: scale(1.08);
+  background: #6d28d9;
+}
+
+.chat-bubble {
+  position: fixed;
+  right: 100px;
+  bottom: 38px;
+  z-index: 149;
+  background: var(--dark-secondary);
+  color: #fff;
+  padding: 12px 22px;
+  border-radius: 24px;
+  font-size: 13px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+/* ========================================
+   PANEL AKSESIBILITAS - MODAL
+   ======================================== */
+.accessibility-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 200;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.3s ease;
+}
+.accessibility-overlay.active {
+  display: flex;
+}
+
+.accessibility-panel {
+  background: #fff;
+  border-radius: var(--radius);
+  max-width: 480px;
+  width: 90%;
+  max-height: 85vh;
+  overflow-y: auto;
+  padding: 32px 28px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.3s ease;
+  position: relative;
+}
+
+.accessibility-panel .close-btn {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  font-size: 24px;
+  color: var(--text-muted);
+  transition: var(--transition);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.accessibility-panel .close-btn:hover {
+  color: var(--primary);
+  transform: rotate(90deg);
+}
+
+.accessibility-panel h2 {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--dark);
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.accessibility-panel h2 svg {
+  color: var(--primary);
+}
+.accessibility-panel .subtitle {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+}
+
+.accessibility-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.access-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 16px 8px;
+  background: var(--gray-bg);
+  border: 2px solid transparent;
+  border-radius: var(--radius-sm);
+  transition: var(--transition);
+  cursor: pointer;
+  font-family: var(--font-family);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-align: center;
+}
+.access-btn:hover {
+  background: var(--primary-light);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+.access-btn.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(211, 47, 47, 0.3);
+}
+.access-btn .icon {
+  font-size: 22px;
+  line-height: 1;
+}
+.access-btn .label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+/* Reset button */
+.access-reset {
+  grid-column: 1 / -1;
+  margin-top: 8px;
+  padding: 12px;
+  background: var(--dark);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  font-size: 13px;
+  transition: var(--transition);
+  cursor: pointer;
+}
+.access-reset:hover {
+  background: var(--primary);
+  transform: translateY(-2px);
+}
+
+/* ========================================
+   AKSESIBILITAS - MODE-MODE
+   ======================================== */
+
+/* --- Mode Kontras Tinggi --- */
+body.high-contrast {
+  --text-primary: #000000;
+  --text-secondary: #1a1a1a;
+  --text-muted: #333333;
+  --gray-bg: #ffffff;
+  --card-bg: #ffffff;
+  --border: #000000;
+}
+body.high-contrast .topbar {
+  background: #000;
+}
+body.high-contrast .navbar {
+  background: #fff;
+  border-bottom: 2px solid #000;
+}
+body.high-contrast .menu-link:hover {
+  background: #000;
+  color: #fff;
+}
+body.high-contrast .brand-badge {
+  background: #000;
+}
+body.high-contrast .access-btn {
+  background: #fff;
+  border-color: #000;
+  color: #000;
+}
+body.high-contrast .access-btn:hover {
+  background: #000;
+  color: #fff;
+}
+body.high-contrast .access-btn.active {
+  background: #000;
+  color: #fff;
+  border-color: #000;
+}
+
+/* --- Mode Grayscale --- */
+body.grayscale {
+  filter: grayscale(100%);
+  -webkit-filter: grayscale(100%);
+}
+
+/* --- Mode Terang --- */
+body.bright-mode {
+  filter: brightness(1.2);
+  -webkit-filter: brightness(1.2);
+}
+body.bright-mode .access-btn.active {
+  filter: brightness(1);
+}
+
+/* --- Font Size --- */
+body.font-small {
+  --font-size-base: 14px;
+}
+body.font-medium {
+  --font-size-base: 16px;
+}
+body.font-large {
+  --font-size-base: 18px;
+}
+body.font-xl {
+  --font-size-base: 20px;
+}
+body.font-xxl {
+  --font-size-base: 22px;
+}
+
+/* --- Highlight Links --- */
+body.highlight-links a:not(.no-highlight) {
+  text-decoration: underline !important;
+  text-decoration-color: var(--primary) !important;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 2px;
+}
+body.highlight-links a:not(.no-highlight):hover {
+  text-decoration-color: var(--primary-dark) !important;
+}
+
+/* --- Readable Font --- */
+body.readable-font {
+  font-family: "Georgia", "Times New Roman", serif !important;
+}
+body.readable-font * {
+  font-family: "Georgia", "Times New Roman", serif !important;
+}
+
+/* --- Animations --- */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    padding: 12px 16px;
+  }
+  .menu {
+    justify-content: center;
+  }
+  .dropdown {
+    position: static;
+    box-shadow: none;
+    border: none;
+    border-top: 1px solid var(--border);
+    border-radius: 0;
+    padding: 4px 0;
+    max-height: none;
+  }
+  .menu-item.open .dropdown {
+    display: flex;
+  }
+  .chat-bubble {
+    display: none;
+  }
+  .accessibility-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .accessibility-panel {
+    padding: 24px 16px;
+    max-width: 95%;
+  }
+}
+
+@media (max-width: 480px) {
+  .brand-text {
+    font-size: 15px;
+  }
+  .menu-link {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+  .topbar {
+    font-size: 10px;
+    padding: 4px 12px;
+  }
+  .topbar .clock {
+    font-size: 10px;
+    padding: 2px 10px;
+  }
+  .fab-accessibility {
+    width: 40px;
+    height: 40px;
+    left: 12px;
+  }
+  .fab-chat {
+    width: 52px;
+    height: 52px;
+    right: 16px;
+    bottom: 16px;
+  }
+  .accessibility-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .access-btn {
+    padding: 12px 6px;
+    font-size: 11px;
+  }
+  .access-btn .icon {
+    font-size: 18px;
+  }
+}

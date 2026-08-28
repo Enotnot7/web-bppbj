@@ -1,0 +1,75 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "assets/images"
+public_folder: "/assets/images"
+
+collections:
+  # ===== SLIDER HERO =====
+  - name: "slides"
+    label: "📸 Slider Hero"
+    folder: "_data/slides"
+    create: true
+    slug: "slide-{{year}}{{month}}{{day}}-{{slug}}"
+    fields:
+      - { label: "Judul", name: "title", widget: "string" }
+      - { label: "Sub Judul", name: "subtitle", widget: "text" }
+      - { label: "Gambar", name: "image", widget: "image", required: false }
+      - {
+          label: "Warna Background",
+          name: "bg_color",
+          widget: "string",
+          default: "#d32f2f",
+        }
+      - { label: "Tanggal", name: "date", widget: "datetime" }
+      - { label: "Aktif", name: "active", widget: "boolean", default: true }
+
+  # ===== BERITA =====
+  - name: "berita"
+    label: "📰 Berita"
+    folder: "_data/berita"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - { label: "Judul", name: "title", widget: "string" }
+      - { label: "Konten", name: "body", widget: "markdown" }
+      - { label: "Gambar", name: "image", widget: "image", required: false }
+      - { label: "Tanggal", name: "date", widget: "datetime" }
+      - {
+          label: "Kategori",
+          name: "category",
+          widget: "string",
+          default: "Berita",
+        }
+      - { label: "Aktif", name: "active", widget: "boolean", default: true }
+
+  # ===== PENGUMUMAN =====
+  - name: "pengumuman"
+    label: "📢 Pengumuman"
+    folder: "_data/pengumuman"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - { label: "Judul", name: "title", widget: "string" }
+      - { label: "Konten", name: "body", widget: "markdown" }
+      - { label: "Tanggal", name: "date", widget: "datetime" }
+      - { label: "Aktif", name: "active", widget: "boolean", default: true }
+
+  # ===== GALERI =====
+  - name: "galeri"
+    label: "🖼️ Galeri"
+    folder: "_data/galeri"
+    create: true
+    slug: "galeri-{{year}}{{month}}{{day}}-{{slug}}"
+    fields:
+      - { label: "Judul", name: "title", widget: "string" }
+      - { label: "Gambar", name: "image", widget: "image" }
+      - label: "Kategori"
+        name: "category"
+        widget: "select"
+        options:
+          - { label: "BPPBJ", value: "BPPBJ" }
+          - { label: "DKI Jakarta", value: "DKI" }
+      - { label: "Tanggal", name: "date", widget: "datetime" }
+      - { label: "Aktif", name: "active", widget: "boolean", default: true }
