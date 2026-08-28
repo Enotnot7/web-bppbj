@@ -13,7 +13,9 @@
       rel="stylesheet"
     />
 
-    <!-- Custom Style untuk Login Page -->
+    <!-- ===== NETLIFY IDENTITY WIDGET (WAJIB!) ===== -->
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+
     <style>
       body {
         font-family: "Inter", sans-serif;
@@ -25,24 +27,20 @@
         margin: 0;
         padding: 20px;
         background-image:
-          radial-gradient(ellipse at 10% 20%, rgba(211, 47, 47, 0.05) 0%, transparent 50%),
-          radial-gradient(ellipse at 90% 80%, rgba(255, 193, 7, 0.05) 0%, transparent 50%);
+          radial-gradient(ellipse at 10% 20%, rgba(211,47,47,0.05) 0%, transparent 50%),
+          radial-gradient(ellipse at 90% 80%, rgba(255,193,7,0.05) 0%, transparent 50%);
       }
       .login-box {
-        background: rgba(255, 255, 255, 0.75);
+        background: rgba(255,255,255,0.75);
         backdrop-filter: blur(24px);
         -webkit-backdrop-filter: blur(24px);
         border-radius: 24px;
         padding: 48px 40px;
         max-width: 420px;
         width: 100%;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
-        border: 1px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+        border: 1px solid rgba(255,255,255,0.3);
         text-align: center;
-        transition: all 0.3s ease;
-      }
-      .login-box:hover {
-        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.12);
       }
       .login-box .badge {
         display: inline-block;
@@ -55,7 +53,6 @@
         letter-spacing: 0.08em;
         text-transform: uppercase;
         margin-bottom: 12px;
-        border: 1px solid rgba(255, 255, 255, 0.1);
       }
       .login-box h1 {
         font-size: 28px;
@@ -64,21 +61,7 @@
         margin-bottom: 2px;
         letter-spacing: -0.02em;
       }
-      .login-box h1 span {
-        color: #d32f2f;
-        position: relative;
-      }
-      .login-box h1 span::after {
-        content: "";
-        position: absolute;
-        bottom: 2px;
-        left: 0;
-        width: 100%;
-        height: 3px;
-        background: #d32f2f;
-        border-radius: 4px;
-        opacity: 0.2;
-      }
+      .login-box h1 span { color: #d32f2f; }
       .login-box .subtitle {
         color: #94a3b8;
         font-size: 14px;
@@ -102,18 +85,15 @@
         border-top-color: #d32f2f;
         border-radius: 50%;
         animation: spin 0.8s linear infinite;
-        flex-shrink: 0;
       }
       @keyframes spin {
-        to {
-          transform: rotate(360deg);
-        }
+        to { transform: rotate(360deg); }
       }
       .login-box .footer-text {
         margin-top: 20px;
         font-size: 12px;
         color: #94a3b8;
-        border-top: 1px solid rgba(0, 0, 0, 0.04);
+        border-top: 1px solid rgba(0,0,0,0.04);
         padding-top: 16px;
       }
       .login-box .footer-text a {
@@ -121,25 +101,94 @@
         font-weight: 600;
         text-decoration: none;
       }
-      .login-box .footer-text a:hover {
-        text-decoration: underline;
-      }
     </style>
   </head>
   <body>
-    <div class="login-box">
+    <div class="login-box" id="app">
       <div class="badge">🔐 Admin Panel</div>
       <h1>CMS <span>BPPBJ</span></h1>
       <p class="subtitle">DKI Jakarta</p>
-      <div class="loading">
+      <div class="loading" id="loading">
         <span class="spinner"></span> Memuat dashboard...
       </div>
       <div class="footer-text">
-        <span>💡 Login dengan <a href="#">Magic Link</a> atau <a href="#">Email</a></span>
+        ⚡ Login via <a href="#" id="magicLinkBtn">Magic Link</a>
       </div>
     </div>
 
-    <!-- ===== DECAP CMS (VERSI BARU) ===== -->
+    <script>
+      // ========================================
+      // INIT NETLIFY IDENTITY WIDGET
+      // ========================================
+      (function() {
+        // Tunggu Identity Widget siap
+        if (window.netlifyIdentity) {
+          const identity = window.netlifyIdentity;
+          
+          // Initialize
+          identity.init({
+            container: '#app',
+            // Biar muncul tombol "Login with email"
+            locale: 'id'
+          });
+
+          // Kalo user udah login, redirect ke dashboard
+          identity.on('login', function(user) {
+            console.log('✅ Login success:', user.email);
+            window.location.href = '/admin/#/';
+          });
+
+          // Kalo user logout, refresh halaman
+          identity.on('logout', function() {
+            window.location.reload();
+          });
+
+          // Kalo ada invite token di URL, handle otomatis
+          if (window.location.hash && window.location.hash.includes('invite_token')) {
+            console.log('🔑 Token detected, handling invite...');
+            identity.on('login', function(user) {
+              console.log('✅ Invite accepted!', user.email);
+              window.location.href = '/admin/#/';
+            });
+          }
+
+          console.log('✅ Identity Widget ready!');
+        } else {
+          console.error('❌ Netlify Identity Widget not loaded!');
+          document.getElementById('loading').innerHTML = '⚠️ Gagal memuat Identity Widget. Coba refresh.';
+        }
+      })();
+
+      // ========================================
+      // MAGIC LINK - TAMPILKAN WIDGET LOGIN
+      // ========================================
+      document.addEventListener('DOMContentLoaded', function() {
+        const magicBtn = document.getElementById('magicLinkBtn');
+        if (magicBtn) {
+          magicBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            if (window.netlifyIdentity) {
+              // Buka popup login dari Identity Widget
+              window.netlifyIdentity.open('login');
+            } else {
+              alert('Identity Widget belum siap. Refresh halaman.');
+            }
+          });
+        }
+
+        // Kalo udah ada token di URL, langsung process
+        if (window.location.hash && window.location.hash.includes('invite_token')) {
+          setTimeout(function() {
+            if (window.netlifyIdentity) {
+              console.log('🔄 Processing invite token...');
+              // Identity Widget otomatis handle
+            }
+          }, 1000);
+        }
+      });
+    </script>
+
+    <!-- ===== DECAP CMS (VERSI TERBARU) ===== -->
     <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
   </body>
 </html>
