@@ -1,9 +1,15 @@
 backend:
   name: git-gateway
   branch: main
+  # Tambahan biar login pake Magic Link bisa jalan
+  login: true
+  site_domain: https://web-bppbj.netlify.app
 
 media_folder: "assets/images"
 public_folder: "/assets/images"
+
+# ===== KONFIGURASI LOGIN =====
+site_url: https://web-bppbj.netlify.app
 
 collections:
   # ===== SLIDER HERO =====
